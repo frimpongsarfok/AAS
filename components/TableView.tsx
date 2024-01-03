@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GestureResponderEvent, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { GestureResponderEvent, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 
 
 export const TableView = (props: { rows: Array<Array<string>>, refresh: boolean,loaded:(toggle:boolean)=>void }) => {
@@ -11,12 +11,14 @@ export const TableView = (props: { rows: Array<Array<string>>, refresh: boolean,
     const Column = (props: { cell: string }) => {
         return <Cell data={props.cell} />
     }
-    const Row = (props: { index: number, columns: Array<string>,onPress:(idx:number)=>void }) => {
-        return (<TouchableOpacity style={styles.row} onPress={(event: GestureResponderEvent) => {
+    const Row = (props: { index: number, columns: Array<string>,onPress:(idx:number)=>void,style:ViewStyle }) => {
+        return (<TouchableOpacity style={props.style} onPress={(event: GestureResponderEvent) => {
             props.onPress(props.index);
+            event.target
         }}>
             {props.columns.map((cell: string, idx: number) => {
-                return <Column key={idx} cell={cell} />
+                
+                return idx===props.columns.length-1?<Column key={idx} cell=""/>:<Column key={idx} cell={cell} />
 
             })}
             <Image source={require("../assets/rfsignal.png")} style={{ width: "5%", height: "100%", alignSelf: "stretch" }} />
@@ -27,11 +29,11 @@ export const TableView = (props: { rows: Array<Array<string>>, refresh: boolean,
     const selectRow=(idx:number)=>{
         setData(data.map((item,index)=>{
             if(index==idx){
-                item[item.length-1]="0"?"1":"0";
+                item[item.length-1]=item[item.length-1]==="0"?"1":"0";
+                
             }
             return item;
         }))
-        console.log(data);
        
     };
 
@@ -43,7 +45,7 @@ export const TableView = (props: { rows: Array<Array<string>>, refresh: boolean,
     const table= (
         <ScrollView style={styles.table}>
             {props.rows.map((data: Array<string>, idx: number) => {
-                return <Row key={idx} index={idx} columns={data} onPress={selectRow}></Row>
+                return <Row key={idx} index={idx} columns={data} onPress={selectRow} style={data[data.length-1]==="1"?styles.rowHighLighted:styles.row}></Row>
             })}
         </ScrollView>
 
@@ -70,6 +72,14 @@ const styles = StyleSheet.create({
 
 
 
+    },
+    rowHighLighted:{
+        borderBottomWidth: 3,
+        backgroundColor:"#0CA789",
+        borderColor: "#8FD14F",
+        marginBottom: 10,
+        flexDirection: "row",
+        justifyContent: "space-around"
     },
     table: {
         backgroundColor: "#000",
