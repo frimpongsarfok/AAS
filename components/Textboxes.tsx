@@ -16,6 +16,6 @@ const styles=StyleSheet.create({
     },
 
 })
-export const TextBox=(props:{placeHolder:string} )=>{
-   return <TextInput value={""} style={styles.textbox} placeholder={props.placeHolder}/> 
+export const TextBox=(props:{value:string,placeHolder:string} )=>{
+   return <TextInput value={props.value} style={styles.textbox} placeholder={props.placeHolder}/> 
 }

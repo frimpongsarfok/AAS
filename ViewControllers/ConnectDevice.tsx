@@ -45,13 +45,13 @@ export default class ConnectDevice extends Component {
             <ImageBackground source={require("../assets/subBackground.png")} style={styles.backgroundImage}>
                     <View style={styles.subView}>
                         <Text style={{ color: "#8FD14F", fontWeight: "bold", fontSize: 20, marginBottom: 40, fontFamily: "Georgia" }}>ENTER AAS DEVICE ID</Text>
-                        <TextBox placeHolder='enter ID here...' />
+                        <TextBox value="" placeHolder='enter ID here...' />
                     </View>
                     <View style={{ width: "15%", height: "20%", position: "absolute", bottom: 0, left: 30 }}>
-                        <BackButton readOnly={false} callback={() => { }} />
+                        <BackButton disabled={false} callback={() => { }} />
                     </View>
                     <View style={{ width: "10%", height: "20%", position: "absolute", bottom: 0, right: 0 }}>
-                        <CheckButton readOnly={false} callback={() => { }} />
+                        <CheckButton disabled={false} callback={() => { }} />
                     </View>
             </ImageBackground>
         </SafeAreaView>)

@@ -10,7 +10,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import MainMenu from "./ViewControllers/MainMenu.tsx";
 import ConnectDevice from "./ViewControllers/ConnectDevice.tsx";
-import JoinChalk from "./ViewControllers/JoinChalk.tsx";
+import CreateChalk from "./ViewControllers/CreateChalk.tsx";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,8 +19,8 @@ function App(): React.JSX.Element {
   return (<NavigationContainer  >
     <Stack.Navigator screenOptions={{headerShown:false}} >
       
-      {/*<Stack.Screen  name="MAIN MENU" component={MainMenu} />*/}
-      <Stack.Screen name="JOIN CHALK" component={JoinChalk} options={{ title: "JOIN CHALK" }} />
+      <Stack.Screen  name="MAIN MENU" component={MainMenu} />
+      {/*<Stack.Screen name="JOIN CHALK" component={CreateChalk} options={{ title: "JOIN CHALK" }} />*/}
       {/*<Stack.Screen  name="CONNECT DEVICE" component={ConnectDevice}/>*/}
     </Stack.Navigator>
 
