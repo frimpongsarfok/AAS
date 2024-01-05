@@ -9,16 +9,18 @@ const styles = StyleSheet.create({
         margin: "1%",
         backgroundColor: "#fff",
         fontFamily: "Georgia",
-        alignItems: "center"
+        alignItems: "center",
+       
     },
     checkButton: {
         width: "100%",
         height: "100%",
         color: "#FFFFFF",
         margin: "1%",
-        backgroundColor: "#fff",
+        backgroundColor: "#000",
         fontFamily: "Georgia",
-        alignItems: "flex-end"
+        alignItems: "flex-end",
+        justifyContent:"center"
     },
     buttonViewImage: {
         width: "100%",
@@ -39,14 +41,14 @@ const styles = StyleSheet.create({
     selectedButtonBackground1:{
         backgroundColor:"#0CA789",
         color:"#fff",
-        fontSize:20,
+        fontSize:25,
         textAlign:"center",
         fontFamily:"Georgia"
     },
     selectedButtonBackground2:{
         backgroundColor:"#000",
         color:"#8FD14F",
-        fontSize:20,
+        fontSize:25,
         textAlign:"center",
         fontFamily:"Georgia",
     }
@@ -85,7 +87,7 @@ export const CloseButton = (props: { disabled: boolean, onPress: () => void }) =
 
 export const SelectableButton = (props: { value:string,selected:boolean,disabled: boolean, onPress: any }) => {
     return <TouchableOpacity style={styles.checkButton} onPress={props.onPress}>
-        <Text style={[{ width: "100%", height: "100%"},props.selected?styles.selectedButtonBackground1:styles.selectedButtonBackground2]}> {props.value}</Text>
+        <Text style={[{ width: "100%", height: "auto"},props.selected?styles.selectedButtonBackground1:styles.selectedButtonBackground2]}> {props.value}</Text>
       
     </TouchableOpacity>
 }
