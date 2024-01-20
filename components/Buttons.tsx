@@ -3,8 +3,8 @@ import { GestureResponderEvent, Image, ImageBackground, StyleSheet, Text, Toucha
 
 const styles = StyleSheet.create({
     buttonList: {
-        width: "48%",
-        height: "30%",
+        width: "100%",
+        height: "100%",
         color: "#FFFFFF",
         margin: "1%",
         backgroundColor: "#fff",
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
         fontWeight: "700"
     },
     closeButton: {
-        width: "5%", 
-        height: "70%",
+        width: "100%", 
+        height: "100%",
         top:2,
         left:10 
     },
