@@ -1,59 +1,40 @@
-import React, { Component } from "react";
 
-import {
-    ImageBackground,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native"
-import { BackButton, CheckButton } from "../components/Buttons";
-import { TextBox } from "../components/Textboxes";
+import React, { ReactNode } from "react"
+import { View,Text } from "react-native"
+import { TextBox } from "../Components/Textboxes"
+import { DialogBox, MESSAGETYPE } from "../Components/DialogBox"
+import CameraScreen from "../Components/CameraScreen"
 
 
+interface ConnectDeviceProps{
+    cameraActive:boolean,
+    connectionHandler:(state:boolean)=>void,
+    handleVisible:(connection:boolean)=>void,
+    setConnection?:(connection:boolean)=>void
+}
 
-const styles = StyleSheet.create({
-    background: {
-        backgroundColor: "#00000000",
-        padding: 5,
-        flex: 1,
-        flexDirection: "row",
-    },
-    subView: {
-        width: "50%",
-        height: "70%",
-        padding: "5%",
-        alignItems: "center",
-        backgroundColor: "#000000"
 
-    },
-    backgroundImage: {
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
-
+export class ConnectDeviceDialog extends React.Component<ConnectDeviceProps> {
+    constructor(props:ConnectDeviceProps){
+        super(props);
+       
     }
-
-});
-export default class ConnectDevice extends Component {
     componentDidMount(): void {
+      
+    }
+    render(): React.ReactNode {
+        const txtbox = <View key={0} style={{ marginTop: "10%" }}>
+            <TextBox value="" placeHolder="ENTER DEVICE ID" readonly={false}/>
+        </View>
 
+
+        
+        const camera= <CameraScreen key={1} cameraActive={this.props.cameraActive}/>
+        return <DialogBox header="CONNECT DEVICE" messageType={MESSAGETYPE.INPUT} message="--deviceConnection--" subView={[camera]} closeHandler={() =>{
+            this.props.handleVisible(false);
+        } } okHandler={()=>void{
+
+            
+        }} />
     }
-    render(): React.ReactElement {
-        return (<SafeAreaView style={styles.background} >
-            <ImageBackground source={require("../assets/subBackground.png")} style={styles.backgroundImage}>
-                    <View style={styles.subView}>
-                        <Text style={{ color: "#8FD14F", fontWeight: "bold", fontSize: 20, marginBottom: 40, fontFamily: "Georgia" }}>ENTER AAS DEVICE ID</Text>
-                        <TextBox value="" placeHolder='enter ID here...' />
-                    </View>
-                    <View style={{ width: "15%", height: "20%", position: "absolute", bottom: 0, left: 30 }}>
-                        <BackButton disabled={false} callback={() => { }} />
-                    </View>
-                    <View style={{ width: "10%", height: "20%", position: "absolute", bottom: 0, right: 0 }}>
-                        <CheckButton disabled={false} callback={() => { }} />
-                    </View>
-            </ImageBackground>
-        </SafeAreaView>)
-    }
-};
+}

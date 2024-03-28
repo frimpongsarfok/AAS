@@ -14,8 +14,8 @@ import {
 import {
     Colors,
 } from 'react-native/Libraries/NewAppScreen'
-import { BackButton, CheckButton } from "../components/Buttons";
-import { TableView } from "../components/TableView";
+import { BackButton, CheckButton } from "../Components/Buttons";
+import { TableView } from "../Components/TableView";
 
 const styles = StyleSheet.create({
     background: {

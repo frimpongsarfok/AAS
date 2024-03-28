@@ -1,21 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { View,TextInput, StyleSheet, ImageBackground, StyleProp, ViewStyle } from "react-native";
 
 const styles=StyleSheet.create({
     textbox:{
         width: "100%",
-        height: "auto",
-        marginBottom:10,
+        height: 15,
+        marginTop:10,
         alignItems:"stretch",
         backgroundColor:"#0CA789",
         borderBottomWidth:5,
         borderColor:"#8FD14F",
         color:"#33FF99",
         textAlign:"center",
-        fontSize:24
+        fontSize:20,
+        padding:5,
+        fontFamily:"Georgia",
+        fontWeight:"bold"
     },
 
 })
-export const TextBox=(props:{value:string,placeHolder:string} )=>{
-   return <TextInput value={props.value} style={styles.textbox} placeholder={props.placeHolder}/> 
+
+
+export const TextBox=(props:{value:string,placeHolder:string,style?:Object, readonly:boolean} )=>{
+    const [text,setText]=useState(props.value);
+   return <TextInput value={text} style={props.style?props.style:styles.textbox} placeholder={props.placeHolder} onChangeText={setText} readOnly={props.readonly}/> 
 }

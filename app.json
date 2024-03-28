@@ -1,4 +1,13 @@
 {
   "name": "AAS",
-  "displayName": "AAS"
+  "displayName": "AAS",
+  
+  "plugins": [
+    [
+      "react-native-vision-camera",
+      {
+        "enableCodeScanner": true
+      }
+    ]
+  ]
 }
