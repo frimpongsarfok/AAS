@@ -1,10 +1,12 @@
 import React from "react";
 import { DialogBox, MESSAGETYPE } from "../Components/DialogBox";
 import { NumericPad } from "../Components/NumericPad";
-import { Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { LetGoProgressBar } from "../Components/LetGoProgressBar";
 import { SelectOption } from "../Components/SelectOptions";
 import { Float } from "react-native/Libraries/Types/CodegenTypes";
+import { TableView } from "../Components/TableView";
+import { RADAL_ITEM_COLOR, Radar, RadarItem } from "../Components/Radar";
 
 enum JUMPTYPE{NONE,HOLYN,COMBAT}
 
@@ -30,6 +32,27 @@ interface LetGoState {
 
 }
 
+const styles=StyleSheet.create({
+    pilotBackground:{
+        width:"100%",
+        height:"100%",
+        flexDirection:"row",
+        backgroundColor:"#1A1A1A"
+       
+    },
+    paxList:{
+        width:"35%",
+        height:"100%"
+    },
+    radar:{
+        width:"55%",
+        height:"100%"
+    },
+    menu:{
+        width:"10%",
+        height:"100%"
+    }
+})
 export class LetGo extends React.Component<LetGoProps, LetGoState>{
     constructor(props: LetGoProps) {
         super(props);
@@ -42,6 +65,7 @@ export class LetGo extends React.Component<LetGoProps, LetGoState>{
             jumpType:JUMPTYPE.NONE,
             jumpTypeDialog:false
         }
+
 
      
     
@@ -62,7 +86,7 @@ export class LetGo extends React.Component<LetGoProps, LetGoState>{
            
         });
 
-        //this.setState({passedAllTest:false,jumpTypeDialog:false})
+      this.setState({passedAllTest:false,jumpTypeDialog:false})
         
     }
 
@@ -74,8 +98,54 @@ export class LetGo extends React.Component<LetGoProps, LetGoState>{
 
     render(): React.ReactNode {
         const LetGoDialog =<LetGoProgressBar style={{width:"100%",height:"100%", backgroundColor:"#0009"}} progress={this.state.progress}/>
-        return <View style={{width:"100%",height:"90%", alignContent:"center", justifyContent:"center"}}>    
-                {this.state.passedAllTest && LetGoDialog}
+        const items:Array<RadarItem>=[
+            {ID:"PAX005",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX006",color:RADAL_ITEM_COLOR.YELLOW},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX006",color:RADAL_ITEM_COLOR.YELLOW},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.RED},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX008",color:RADAL_ITEM_COLOR.RED},
+            {ID:"PAX006",color:RADAL_ITEM_COLOR.YELLOW},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.RED},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX006",color:RADAL_ITEM_COLOR.YELLOW},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.RED},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+    ];
+        const PilotMode=
+          <View style={styles.pilotBackground}>
+                <View style={styles.paxList}>
+                    
+                    <TableView rows={[["PAX005"],["PAX006"],["PAX007"],["PAX008"]]} refresh={false} loaded={()=>{}}/>
+                    
+                </View>
+                <View style={styles.menu}></View>
+                <View style={styles.radar}>
+                        <Radar key={1} items={ items} alarm={false}/>
+                </View>
+
         </View>
+        return PilotMode;
+      //  return <View style={{width:"100%",height:"90%", alignContent:"center", justifyContent:"center"}}>    
+        //        {this.state.passedAllTest && LetGoDialog}
+        //</View>
     }
 }

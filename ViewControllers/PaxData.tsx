@@ -56,8 +56,10 @@ interface PaxDataState {
     height?:String,
     weight?:String,
     age?:Number
+    editMode:boolean
 
 }
+
 export class PaxData extends React.Component<PaxDataProps, PaxDataState> {
     constructor(props: PaxDataProps) {
         super(props)
@@ -66,22 +68,28 @@ export class PaxData extends React.Component<PaxDataProps, PaxDataState> {
             data: [{ "HEIGHT": "6'1" }, { "WEIGHT IN LBS": "185" }, { "AGE": "28" }],
             message:"",
             messageType:MESSAGETYPE.INPUT,
-            header:"PAX DATA"
+            header:"PAX DATA",
+            editMode:false,
         };
+        this.editMode=this.editMode.bind(this)
         
+    }
+
+    editMode(){
+        this.setState({editMode:!this.editMode});
     }
     makeRows(): ReactNode {
         return <View key={1} style={styles.rowBackground}>
             <View style={{height:30, width:"100%",  alignItems:"flex-end"}}>
                     <View style={{width:"10%", height:"100%"}}>
-                            <EditButton disabled={false} onPress={()=>{}} />
+                            <EditButton disabled={false} onPress={this.editMode} />
                     </View>
                     
             </View>
             {this.state.data.map((row: {}, idx: number) =>{
                 return <View key={idx} style={styles.row}>
                     <Text key={idx+"label"} style={{ width: "45%", textAlign: "center", color: "#8FD14F", fontSize: 16 }}>{Object.keys(row)[0]}</Text>
-                     <TextBox key={idx+"input1"} placeHolder="" value={ String(Object.values(row))} style={{ width: "45%", color: "#8FD14F", fontSize: 16, textAlign:"right" }} readonly={false}/> 
+                     <TextBox key={idx+"input1"} placeHolder="" value={ String(Object.values(row))} style={{ width: "45%", color: "#8FD14F", fontSize: 16, textAlign:"right" }} readonly={this.state.editMode}/> 
                 </View>})
             }</View>
     }

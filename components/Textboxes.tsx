@@ -7,7 +7,6 @@ const styles=StyleSheet.create({
         height: 15,
         marginTop:10,
         alignItems:"stretch",
-        backgroundColor:"#0CA789",
         borderBottomWidth:5,
         borderColor:"#8FD14F",
         color:"#33FF99",

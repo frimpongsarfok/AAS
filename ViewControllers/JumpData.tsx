@@ -1,3 +1,4 @@
+
 import React, { ReactNode } from "react"
 import {
     SafeAreaView,
@@ -129,7 +130,6 @@ export class JumpData extends React.Component<JumpDataProps, JumpDataState> {
     
 
     render(): React.ReactNode {
-
         const subView = (
             <View key={"set_altitude_subview"} style={{ width: "100%", height: "100%",}}>
                 <View style={{ width: "100%", height: "75%", flexDirection: "row", marginBottom:"5%" }}>
