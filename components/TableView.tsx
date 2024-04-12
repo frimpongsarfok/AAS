@@ -1,3 +1,4 @@
+import React from "react";
 import {
     useEffect,
     useState
@@ -9,60 +10,105 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    View,
     ViewStyle
 } from "react-native";
 
+interface TableViewProps {
+    data: Array<Array<string>>,
+    refresh: boolean,
+    loaded: (toggle: boolean) => void,
+    signalSwitchArray: Array<boolean>
+}
+interface TableViewState {
+    rowsData: Array<Array<string>>,
+    showSignalList: Array<boolean>,
+    selectedList: Array<boolean>
+}
+export class TableView extends React.Component<TableViewProps, TableViewState> {
 
-export const TableView = (props: { rows: Array<Array<string>>, refresh: boolean, loaded: (toggle: boolean) => void }) => {
-    const [data, setData] = useState(props.rows);
+    constructor(props: TableViewProps) {
+        super(props)
+        this.state = {
+            rowsData: props.data,
+            showSignalList: this.props.signalSwitchArray,
+            selectedList: Array<boolean>(props.data.length).fill(false)
+        }
+        this.selectRow = this.selectRow.bind(this)
+        this.showRowSignal = this.showRowSignal.bind(this)
 
-    const Cell = (props: { data: string }) => {
-        return <Text style={styles.cellText}>{props.data}</Text>
+
     }
-    const Column = (props: { cell: string }) => {
-        return <Cell data={props.cell} />
+
+    selectRow(rowIndex: number) {
+        this.setState({
+            selectedList: this.state.selectedList.map((item, index) => {
+                if (index == rowIndex)
+                    return !item;
+                return item;
+            })
+        })
     }
-    const Row = (props: { index: number, columns: Array<string>, onPress: (idx: number) => void, style: ViewStyle }) => {
-        return (<TouchableOpacity style={props.style} onPress={(event: GestureResponderEvent) => {
-            props.onPress(props.index);
-            event.target
-        }}>
-            {props.columns.map((cell: string, idx: number) => {
-
-                return idx === props.columns.length - 1 ? <Column key={idx} cell="" /> : <Column key={idx} cell={cell} />
-
-            })}
-            <Image source={require("../assets/rfsignal.png")} style={{ width: "5%", height: "100%", alignSelf: "stretch" }} />
-        </TouchableOpacity>);
-
+    showRowSignal(rowIndex: number,) {
+        this.setState({
+            showSignalList: this.state.showSignalList.map((item, index) => {
+                if (index == rowIndex)
+                    return !item;
+                return item;
+            })
+        })
     }
 
-    const selectRow = (idx: number) => {
-        setData(data.map((item, index) => {
-            if (index == idx) {
-                item[item.length - 1] = item[item.length - 1] === "0" ? "1" : "0";
 
-            }
-            return item;
-        }))
 
-    };
+    render(): React.ReactNode {
+        const Cell = (props: { data: string }) => {
+            return <Text style={styles.cellText}>{props.data}</Text>
+        }
 
-    useEffect(() => {
-        if (!props.refresh)
-            setData(data.map((row) => { row.push("0"); return row }));
-    }, [props.refresh])
+        const Column = (props: { cell: string }) => {
+            return <Cell data={props.cell} />
 
-    const table = (
-        <ScrollView style={styles.table}>
-            {props.rows.map((data: Array<string>, idx: number) => {
-                return <Row key={idx} index={idx} columns={data} onPress={selectRow} style={data[data.length - 1] === "1" ? styles.rowHighLighted : styles.row}></Row>
-            })}
-        </ScrollView>
+        }
+        const Row = (props: { index: number, columns: Array<string>, onPress: (idx: number) => void, selected: boolean, showSignal: boolean }) => {
+            return (
+                <TouchableOpacity style={props.selected ? styles.rowHighLighted : styles.row} onPress={() => {
+                    props.onPress(props.index);
+                }}>
+                    {props.columns.map((cell: string, idx: number) => {
+                        return <Column key={idx} cell={cell} />
+                    })}
+                    {props.showSignal && <Image key={props.columns.map.length} source={require("../assets/rfsignal.png")} style={{ width: null, height: null, resizeMode:"center"}} />}
+                    {!props.showSignal && <Column key={props.columns.map.length} cell={"\t"} />}
+                </TouchableOpacity>
+            );
+        }
 
-    )
-    props.loaded(false);
-    return table;
+        const Heading = (props: { heading: Array<string> }) => {
+            return (<View key={"hearder"} style={{ width: "100%", height: 40, backgroundColor: "#8FD14F", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                {props.heading.map((cell: string, idx: number) => {
+                    return <Text key={idx} style={{ fontSize: 16, fontWeight: "bold" }}>  {cell} / </Text>
+
+                })}
+            </View>);
+
+        }
+
+        const table = (
+            <ScrollView style={styles.table}>
+                {this.state.rowsData.map((data: Array<string>, idx: number) => {
+                    if (idx === 0) {
+                        return <Heading key={0} heading={data} />
+                    }
+                    return <Row key={idx} index={idx} columns={data} onPress={this.selectRow} selected={this.state.selectedList[idx]} showSignal={Boolean(this.state.showSignalList[idx - 1])} />
+                })}
+            </ScrollView>
+
+        )
+        this.props.loaded(true);
+        return table;
+    }
+
 
 }
 const styles = StyleSheet.create({
@@ -72,13 +118,14 @@ const styles = StyleSheet.create({
     cellText: {
         color: "#8FD14F",
         fontSize: 15,
-
+        fontWeight: "500"
     },
     row: {
         borderBottomWidth: 3,
         borderColor: "#8FD14F",
-        marginBottom: 10,
+        marginTop: 10,
         flexDirection: "row",
+        height: 30,
         justifyContent: "space-around"
 
 
@@ -88,7 +135,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 3,
         backgroundColor: "#0CA789",
         borderColor: "#8FD14F",
-        marginBottom: 10,
+        marginTop: 10,
+        height: 30,
         flexDirection: "row",
         justifyContent: "space-around"
     },

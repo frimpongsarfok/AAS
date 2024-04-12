@@ -1,12 +1,13 @@
 import React from "react";
 import { DialogBox, MESSAGETYPE } from "../Components/DialogBox";
 import { NumericPad } from "../Components/NumericPad";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, PixelRatio, StyleSheet, Text, View } from "react-native";
 import { LetGoProgressBar } from "../Components/LetGoProgressBar";
 import { SelectOption } from "../Components/SelectOptions";
 import { Float } from "react-native/Libraries/Types/CodegenTypes";
 import { TableView } from "../Components/TableView";
 import { RADAL_ITEM_COLOR, Radar, RadarItem } from "../Components/Radar";
+import { Map } from "./Map";
 
 enum JUMPTYPE{NONE,HOLYN,COMBAT}
 
@@ -117,7 +118,7 @@ export class LetGo extends React.Component<LetGoProps, LetGoState>{
             {ID:"PAX008",color:RADAL_ITEM_COLOR.RED},
             {ID:"PAX006",color:RADAL_ITEM_COLOR.YELLOW},
             {ID:"PAX007",color:RADAL_ITEM_COLOR.RED},
-            {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
+            {ID:"PAX001",color:RADAL_ITEM_COLOR.GREEN},
             {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
             {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
             {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
@@ -130,22 +131,37 @@ export class LetGo extends React.Component<LetGoProps, LetGoState>{
             {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
             {ID:"PAX007",color:RADAL_ITEM_COLOR.GREEN},
     ];
-        const PilotMode=
-          <View style={styles.pilotBackground}>
+
+    const tablView= <TableView data={[
+        //
+        ["PAX","ALTITUDE"],
+        ["PAX006","1100"],
+        ["PAX007","0500"],
+        ["PAX008","0283"]]
+        } 
+        refresh={false}
+        loaded={()=>{}}
+        signalSwitchArray={[true,true,false]}
+    />
+  
+        const pilotMode=
+          (<View style={styles.pilotBackground}>
                 <View style={styles.paxList}>
-                    
-                    <TableView rows={[["PAX005"],["PAX006"],["PAX007"],["PAX008"]]} refresh={false} loaded={()=>{}}/>
-                    
+                    {tablView}
                 </View>
-                <View style={styles.menu}></View>
+                <View style={styles.menu}>
+
+                </View>
                 <View style={styles.radar}>
-                        <Radar key={1} items={ items} alarm={false}/>
+                        <Radar items={ items} alarm={false}/>
                 </View>
 
+        </View>)
+        
+     
+        return pilotMode;
+       return <View style={{width:"100%",height:"90%", alignContent:"center", justifyContent:"center"}}>    
+               {this.state.passedAllTest && LetGoDialog}
         </View>
-        return PilotMode;
-      //  return <View style={{width:"100%",height:"90%", alignContent:"center", justifyContent:"center"}}>    
-        //        {this.state.passedAllTest && LetGoDialog}
-        //</View>
     }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Platform, PermissionsAndroid } from 'react-native';
 import { Camera, useCameraDevices, CameraDevice, useCodeScanner } from 'react-native-vision-camera';
-// import Orientation, { useOrientationChange } from 'react-native-orientation-locker';
+import Orientation, { useOrientationChange } from 'react-native-orientation-locker';
 
 interface CameraProps{
     cameraActive:boolean
@@ -17,23 +17,8 @@ const CameraScreen: React.FC<CameraProps> = ({cameraActive}) => {
         }
     })
 
-    // const orien= useOrientationChange((orientation) => {
-    //     switch (orientation) {
-    //     case 'LANDSCAPE-LEFT':
-    //         setRotation('90deg');
-    //         break;
-    //     case 'LANDSCAPE-RIGHT':
-    //         setRotation('-90deg');
-    //         break;
-    //     case 'PORTRAIT-UPSIDEDOWN':
-    //         setRotation('180deg');
-    //         break;
-    //     case 'PORTRAIT':
-    //     default:
-    //         setRotation('0deg');
-    //         break;
-    //     }
-    // });
+  
+   
     const device: CameraDevice | undefined = devices[0]; // Use the back camera
     const [hasPermission, setHasPermission] = useState<boolean>(false);
 
@@ -73,8 +58,46 @@ const CameraScreen: React.FC<CameraProps> = ({cameraActive}) => {
 
     if (device === null || !hasPermission) {
         console.log("no camera device!!!");
-        return <View />
+        return <View > </View>
     }
+    const orien = useOrientationChange((orientation) => {
+        switch (orientation) {
+            case 'LANDSCAPE-LEFT':
+                setRotation('90deg');
+                break;
+            case 'LANDSCAPE-RIGHT':
+                setRotation('-90deg');
+                break;
+            case 'PORTRAIT-UPSIDEDOWN':
+                setRotation('180deg');
+                break;
+            case 'PORTRAIT':
+            default:
+                setRotation('0deg');
+                break;
+        }
+        return orientation; // Add this line to return the current orientation value
+    });
+
+    const orient = useOrientationChange((orientation) => {
+        switch (orientation) {
+            case 'LANDSCAPE-LEFT':
+                setRotation('90deg');
+                break;
+            case 'LANDSCAPE-RIGHT':
+                setRotation('-90deg');
+                break;
+            case 'PORTRAIT-UPSIDEDOWN':
+                setRotation('180deg');
+                break;
+            case 'PORTRAIT':
+            default:
+                setRotation('0deg');
+                break;
+        }
+        return orientation; // Return the current orientation value
+    });
+
     return (
         <View style={styles.container}>
             <Camera
@@ -82,8 +105,7 @@ const CameraScreen: React.FC<CameraProps> = ({cameraActive}) => {
                 device={device}
                 isActive={cameraActive}
                 codeScanner={codeScanner}
-
-
+                orientation={orient}
             />
             {/* You can also add other UI components that you need */}
         </View>

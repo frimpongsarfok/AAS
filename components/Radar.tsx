@@ -81,7 +81,7 @@ export const Radar = (props: { items: Array<RadarItem>, alarm: boolean }): React
    // }, [paxStatus])
 
 
-    console.log(paxStatus)
+  
 
     return <View style={styles.background}>
         <View style={styles.radarImagaeBack}>
@@ -89,9 +89,9 @@ export const Radar = (props: { items: Array<RadarItem>, alarm: boolean }): React
         </View>
         <View style={styles.paxStatus}>
             {paxStatus}
-            {displayPaxStatus && <PaxStatus paxNumber="PAX-005-B" altitude={800} avgSpeed={20} display={setDisplayPaxStatus} />}
+           
         </View>
-
+        {displayPaxStatus && <PaxStatus paxNumber="PAX-005-B" altitude={800} avgSpeed={20} display={setDisplayPaxStatus} />}
     </View>
 }
 

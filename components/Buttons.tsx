@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
         height: "100%",
         margin: "1%",
     },
-
     buttonViewImage: {
             flex:1, 
             width:null , 
