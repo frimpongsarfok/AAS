@@ -5,7 +5,7 @@ import React, { ReactNode } from "react"
 import { TextBox } from "../Components/Textboxes"
 
 
-enum JOIN_ACTION { MAKE, JOIN, NONE, COMPLETE }
+enum JOIN_ACTION { MAKE, JOIN, NONE }
 
 interface JoinDialogState {
     selectedOption: JOIN_ACTION,
@@ -124,10 +124,6 @@ export class JoinDialog extends React.Component<JoinDialogProps, JoinDialogState
                 }
                 tmpView = selectOption;
                 break;
-            case JOIN_ACTION.COMPLETE:
-                this.setState({ joinSuccessful: true });
-                this.props.handleVisible(false);
-                break;
             default:
                 break;
 
@@ -137,8 +133,14 @@ export class JoinDialog extends React.Component<JoinDialogProps, JoinDialogState
             if (this.state.selectedOption === JOIN_ACTION.NONE) {
                 this.setState({ messageType: MESSAGETYPE.WARNING, message: "SELECT OPTION TO MAKE OR JOIN EXISTING CHALK!!!" })
                 this.props.handleVisible(true);
-            } else {
-                this.setState({ messageType: MESSAGETYPE.NONE, message: "" })
+            } else if (this.state.selectedOption === JOIN_ACTION.MAKE) {
+                
+                this.setState({joinSuccessful:true} )
+                this.props.handleVisible(false);
+            }else if(this.state.selectedOption===JOIN_ACTION.JOIN){
+
+                this.setState({joinSuccessful:true} )
+                this.props.handleVisible(false);
             }
 
         }} closeHandler={() => { this.props.handleVisible(false) }} />
