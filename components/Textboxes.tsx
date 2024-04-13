@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View,TextInput, StyleSheet, ImageBackground, StyleProp, ViewStyle } from "react-native";
+import { View,TextInput, StyleSheet, ImageBackground, StyleProp, ViewStyle, ColorValue } from "react-native";
 
 const styles=StyleSheet.create({
     textbox:{
@@ -14,13 +14,13 @@ const styles=StyleSheet.create({
         fontSize:20,
         padding:5,
         fontFamily:"Georgia",
-        fontWeight:"bold"
+        fontWeight:"bold",
+        
     },
 
 })
 
 
-export const TextBox=(props:{value:string,placeHolder:string,style?:Object, readonly:boolean} )=>{
-    const [text,setText]=useState(props.value);
-   return <TextInput value={text} style={props.style?props.style:styles.textbox} placeholder={props.placeHolder} onChangeText={setText} readOnly={props.readonly}/> 
+export const TextBox=(props:{value:string,placeHolder:string,style?:Object, readonly:boolean, onChangeText?:(text:string) => string, placeholderTextColor?:ColorValue}, )=>{
+   return <TextInput value={props.value} style={props.style?props.style:styles.textbox} placeholder={props.placeHolder} onChangeText={props.onChangeText} readOnly={props.readonly} placeholderTextColor={props.placeholderTextColor}/> 
 }
