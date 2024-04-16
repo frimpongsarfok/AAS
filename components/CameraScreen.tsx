@@ -1,13 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Platform, PermissionsAndroid } from 'react-native';
 import { Camera, useCameraDevices, CameraDevice, useCodeScanner } from 'react-native-vision-camera';
-import Orientation, { useOrientationChange } from 'react-native-orientation-locker';
+import  { useOrientationChange } from 'react-native-orientation-locker';
+
+import { useLayoutEffect, useRef } from 'react';
+import { gravity } from 'react-native-sensors';
+
+type Rotation = 'top' | 'down' | 'right' | 'left';
+
+const useDeviceRotationSensor = (
+  callback: (rotation: Rotation, degree: number) => void,
+) => {
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+  useLayoutEffect(() => {
+    // We use gravity sensor here because react-native-orientation
+    // can't detect landscape orientation when the device's orientation is locked
+    const subscription = gravity.subscribe(({ x, y }) => {
+      const radian = Math.atan2(y, x);
+      const degree = (radian * 180) / Math.PI;
+
+      let rotation: Rotation = 'left';
+      if (degree > -135) rotation = 'top';
+      if (degree > -45) rotation = 'right';
+      if (degree > 45) rotation = 'down';
+      if (degree > 135) rotation = 'left';
+
+      if (Platform.OS === 'android') {
+        rotation = 'right';
+        if (degree > -135) rotation = 'down';
+        if (degree > -45) rotation = 'left';
+        if (degree > 45) rotation = 'top';
+        if (degree > 135) rotation = 'right';
+      }
+
+      callbackRef.current(rotation, degree);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+};
 
 interface CameraProps{
     cameraActive:boolean
 }
 const CameraScreen: React.FC<CameraProps> = ({cameraActive}) => {
-    const [rotation, setRotation] = useState('0deg');
+    const [rotation, setRotation] = useState(Orientation);
 
     const devices = useCameraDevices();
     const codeScanner = useCodeScanner({
@@ -60,44 +97,34 @@ const CameraScreen: React.FC<CameraProps> = ({cameraActive}) => {
         console.log("no camera device!!!");
         return <View > </View>
     }
-    const orien = useOrientationChange((orientation) => {
+    useOrientationChange((orientation) =>{ 
         switch (orientation) {
             case 'LANDSCAPE-LEFT':
-                setRotation('90deg');
+                setRotation( 'landscape-left' );
                 break;
             case 'LANDSCAPE-RIGHT':
-                setRotation('-90deg');
+                setRotation('landscape-right');
                 break;
             case 'PORTRAIT-UPSIDEDOWN':
-                setRotation('180deg');
+                setRotation('portrait-upside-down');
                 break;
             case 'PORTRAIT':
             default:
-                setRotation('0deg');
+                setRotation('portrait');
                 break;
         }
+
         return orientation; // Add this line to return the current orientation value
     });
 
-    const orient = useOrientationChange((orientation) => {
-        switch (orientation) {
-            case 'LANDSCAPE-LEFT':
-                setRotation('90deg');
-                break;
-            case 'LANDSCAPE-RIGHT':
-                setRotation('-90deg');
-                break;
-            case 'PORTRAIT-UPSIDEDOWN':
-                setRotation('180deg');
-                break;
-            case 'PORTRAIT':
-            default:
-                setRotation('0deg');
-                break;
-        }
-        return orientation; // Return the current orientation value
-    });
-
+    useDeviceRotationSensor((rotation) => {
+        // These still work when the device orientation is unlocked
+        setCameraOrientation('landscapeRight');
+        if (rotation === 'top') setCameraOrientation('portrait');
+        if (rotation === 'right') setCameraOrientation('landscapeLeft');
+        if (rotation === 'down') setCameraOrientation('portraitUpsideDown');
+        if (rotation === 'left') setCameraOrientation('landscapeRight');
+      });
     return (
         <View style={styles.container}>
             <Camera
@@ -105,7 +132,7 @@ const CameraScreen: React.FC<CameraProps> = ({cameraActive}) => {
                 device={device}
                 isActive={cameraActive}
                 codeScanner={codeScanner}
-                orientation={orient}
+                
             />
             {/* You can also add other UI components that you need */}
         </View>
@@ -121,3 +148,7 @@ const styles = StyleSheet.create({
 });
 
 export default CameraScreen;
+function setCameraOrientation(arg0: string) {
+    throw new Error('Function not implemented.');
+}
+

@@ -78,7 +78,7 @@ export class TableView extends React.Component<TableViewProps, TableViewState> {
                     {props.columns.map((cell: string, idx: number) => {
                         return <Column key={idx} cell={cell} />
                     })}
-                    {props.showSignal && <Image key={props.columns.map.length} source={require("../assets/rfsignal.png")} style={{ width: null, height: null, resizeMode:"center"}} />}
+                    {props.showSignal && <Image key={props.columns.map.length} source={require("../assets/rfsignal.png")} style={{ width: 20, height:20, borderRadius:10, marginTop:5}} />}
                     {!props.showSignal && <Column key={props.columns.map.length} cell={"\t"} />}
                 </TouchableOpacity>
             );
@@ -87,7 +87,7 @@ export class TableView extends React.Component<TableViewProps, TableViewState> {
         const Heading = (props: { heading: Array<string> }) => {
             return (<View key={"hearder"} style={{ width: "100%", height: 40, backgroundColor: "#8FD14F", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                 {props.heading.map((cell: string, idx: number) => {
-                    return <Text key={idx} style={{ fontSize: 16, fontWeight: "bold" }}>  {cell} / </Text>
+                    return <Text key={idx} style={{ fontSize: 16, fontWeight: "bold" }}>  [{cell}]  </Text>
 
                 })}
             </View>);

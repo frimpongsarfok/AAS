@@ -53,9 +53,20 @@ export const Radar = (props: { items: Array<RadarItem>, alarm: boolean }): React
     const [displayPaxStatus, setDisplayPaxStatus] = useState(false)
     const [count, setCount] = useState(0);
 
+
     const height = Dimensions.get("window").height * .55;
     const width = Dimensions.get("window").width * .22;
-    var paxStatus;
+    const [paxStatus, setPaxStatus] = useState(
+        generateRandomPointsWithMinDistance(width * .03, width, height * .03, height, props.items.length, 35).map((item, index) => {
+            return <TouchableOpacity key={index} style={[{
+                position: 'absolute',
+                width: 25,
+                height: 25,
+                borderRadius: 13,
+                backgroundColor: ["#F00", "#FF0", "#0F0"][props.items[index].color]
+            }, { top: item.y, left: item.x }]} onPress={(e) => { setDisplayPaxStatus(true); console.log(e.target) }} />
+        })
+    )
 
     //map pax item as icon on radar
     //call for alarm if param:alarm is true
@@ -66,23 +77,7 @@ export const Radar = (props: { items: Array<RadarItem>, alarm: boolean }): React
             else
                 setCount(0)
         }, 200);
-    }
-
-   // useEffect(() => {
-        paxStatus = generateRandomPointsWithMinDistance(width * .03, width, height * .03, height, props.items.length, 35).map((item, index) => {
-            return <TouchableOpacity key={index} style={[{
-                position: 'absolute',
-                width: 25,
-                height: 25,
-                borderRadius: 13,
-                backgroundColor: ["#F00", "#FF0", "#0F0"][props.items[index].color]
-            }, { top: item.y, left: item.x }]} onPress={() => { setDisplayPaxStatus(true) }} />
-        })
-   // }, [paxStatus])
-
-
-  
-
+    }  
     return <View style={styles.background}>
         <View style={styles.radarImagaeBack}>
             <Image style={styles.radarImage} source={require("../assets/radar.gif")} />

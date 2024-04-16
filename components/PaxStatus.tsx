@@ -40,7 +40,7 @@ export class PaxStatus extends React.Component<PaxStatusProps>{
         super(props)
     }
     render(): React.ReactNode {
-        return <TouchableOpacity style={styles.background} onPressOut={()=>this.props.display(false)}>
+        return <TouchableOpacity style={styles.background} onPress={()=>this.props.display(false)}>
             <View style={styles.statusBackground}>
                 <Text style={styles.paxNumber}>{this.props.paxNumber}</Text>
                 <Text style={styles.paxNumber}>ALT : {this.props.altitude}</Text>

@@ -134,7 +134,7 @@ export class LetGo extends React.Component<LetGoProps, LetGoState>{
 
     const tablView= <TableView data={[
         //
-        ["PAX","ALTITUDE"],
+        ["   PAX     ","  ALT.   ","  SIGNAL "],
         ["PAX006","1100"],
         ["PAX007","0500"],
         ["PAX008","0283"]]
